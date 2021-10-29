@@ -1,0 +1,11 @@
+include Makefile
+include Changelog
+include MANIFEST.in
+include README.md
+include requirements_dev.txt
+include tox.ini
+
+recursive-include docs *.rst *.md conf.py Makefile *.jpg *.png *.gif *.txt
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

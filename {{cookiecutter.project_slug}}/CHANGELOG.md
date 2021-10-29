@@ -1,0 +1,6 @@
+# Changelog
+
+
+## {{ cookiecutter.version }}
+
+### Other
