@@ -5,5 +5,4 @@ tox
 bump2version
 gitchangelog
 pystache
-atlassian-python-api
 click
