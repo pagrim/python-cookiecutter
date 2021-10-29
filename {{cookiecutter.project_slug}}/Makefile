@@ -1,6 +1,10 @@
 targetenvs := python3.7 python3.8 python3.9 python3.10
 docker_test_image := quay.io/pypa/manylinux2014_x86_64:latest
 
+repositories := {{ cookiecutter.pypirc_repositories }}
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
+
 .PHONY: clean clean-test clean-pyc clean-build clean-docs test test-all dist install install-develop publish-locally update help publish install-devreqs
 .DEFAULT_GOAL := help
 
