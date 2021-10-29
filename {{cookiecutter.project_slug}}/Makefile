@@ -48,11 +48,11 @@ test-all: ## run tests on every Python version with tox in docker container
 	docker pull ${docker_test_image}
 	docker run --rm -v ${current_dir}:/project ${docker_test_image} make -C /project test-all-locally
 
-test-all-locally: install-devreqs ## run tests on every Python version with tox
+test-all-locally: ## run tests on every Python version with tox
 	python3.8 -m pip install tox; \
 	python3.8 -m tox
 
-dist: clean install-devreqs ## builds source and wheel package for {{ cookiecutter.project_slug }}
+dist: clean ## builds source and wheel package for {{ cookiecutter.project_slug }}
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
@@ -64,7 +64,7 @@ install-develop: install-devreqs ## Install {{ cookiecutter.project_slug }} pyth
 	pip uninstall {{ cookiecutter.project_slug }}
 	pip install -e .
 
-publish: install-devreqs ## builds source and wheel package within docker container and publishes to nexus
+publish: ## builds source and wheel package within docker container and publishes to nexus
 	docker pull ${docker_test_image}
 	docker run --rm -v ${current_dir}:/project -v ${HOME}/.pypirc:/root/.pypirc:ro ${docker_test_image} make -C /project publish-locally
 
