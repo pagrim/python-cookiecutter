@@ -1,5 +1,6 @@
 targetenvs := python3.7 python3.8 python3.9 3.10
 repositories := {{ cookiecutter.pypirc_repositories }}
+docker_test_image := quay.io/pypa/manylinux2014_x86_64:latest
 
 .PHONY: clean clean-test clean-pyc clean-build clean-docs test test-all dist install install-develop publish-locally update help publish install-devreqs
 .DEFAULT_GOAL := help
@@ -40,8 +41,13 @@ clean-test: ## remove test artifacts
 test: ## run tests quickly with the default Python
 	pytest
 
-test-all: install-devreqs ## run tests on every Python version with tox
-	tox
+test-all: ## run tests on every Python version with tox in docker container
+	docker pull ${docker_test_image}
+	docker run --rm -v ${current_dir}:/project ${docker_test_image} make -C /project test-all-locally
+
+test-all-locally: install-devreqs ## run tests on every Python version with tox
+	python3.8 -m pip install tox; \
+	python3.8 -m tox
 
 dist: clean install-devreqs ## builds source and wheel package for {{ cookiecutter.project_slug }}
 	python setup.py sdist
@@ -56,8 +62,8 @@ install-develop: install-devreqs ## Install {{ cookiecutter.project_slug }} pyth
 	pip install -e .
 
 publish: install-devreqs ## builds source and wheel package within docker container and publishes to nexus
-	docker pull quay.io/pypa/manylinux2014_x86_64:latest
-	docker run --rm -v ${current_dir}:/project -v ${HOME}/.pypirc:/root/.pypirc:ro quay.io/pypa/manylinux2014_x86_64:latest make -C /project publish-locally
+	docker pull ${docker_test_image}
+	docker run --rm -v ${current_dir}:/project -v ${HOME}/.pypirc:/root/.pypirc:ro ${docker_test_image} make -C /project publish-locally
 
 publish-locally: ## builds source and wheel package locally and publishes to nexus
 	for pythonenv in $(targetenvs) ; do \
