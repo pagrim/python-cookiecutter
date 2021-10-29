@@ -1,5 +1,4 @@
-targetenvs := python3.7 python3.8 python3.9 3.10
-repositories := {{ cookiecutter.pypirc_repositories }}
+targetenvs := python3.7 python3.8 python3.9 python3.10
 docker_test_image := quay.io/pypa/manylinux2014_x86_64:latest
 
 .PHONY: clean clean-test clean-pyc clean-build clean-docs test test-all dist install install-develop publish-locally update help publish install-devreqs
