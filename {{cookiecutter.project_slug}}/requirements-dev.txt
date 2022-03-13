@@ -1,8 +1,5 @@
+-r requirements.txt
 pip
 wheel
 pytest
-tox
 bump2version
-gitchangelog
-pystache
-click
