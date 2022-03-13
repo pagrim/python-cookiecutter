@@ -1,12 +1,13 @@
 .PHONY: $(MAKECMDGOALS)
+.EXPORT_ALL_VARIABLES:
 
 test:
 	export PYTHONPATH="./src:./test" && pytest test
 
 environment:
-	ifeq(, $(wildcard .venv))
-		python3 -m venv .venv
-	endif
+ifeq (,$(wildcard .venv))
+	python3 -m venv .venv
+endif
 	.venv/bin/pip install -r requirements-dev.txt
 
 build:
